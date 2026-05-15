@@ -1,0 +1,30 @@
+{
+  "name": "another-todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network mainnet",
+    "verify:sepolia": "hardhat run scripts/verify.js --network sepolia",
+    "verify:mainnet": "hardhat run scripts/verify.js --network mainnet",
+    "test": "hardhat test",
+    "test:watch": "hardhat test --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.11",
+    "@nomicfoundation/hardhat-mocha": "^3.0.19",
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.5",
+    "@nomicfoundation/hardhat-verify": "^3.0.17",
+    "dotenv": "^17.4.2",
+    "ethers": "^6.16.0",
+    "hardhat": "^3.4.5",
+    "solc": "0.8.28"
+  }
+}
