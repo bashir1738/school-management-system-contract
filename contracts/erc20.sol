@@ -20,6 +20,11 @@ contract HybitToken {
         _;
     }
 
+    modifier validAddress(address _addr) {
+        require(_addr != address(0), "Address cannot be zero");
+        _;
+    }
+
     constructor() {
         owner = msg.sender;
         uint256 initialSupply = 1000000 * 10**18;
@@ -28,12 +33,11 @@ contract HybitToken {
         emit Transfer(address(0), msg.sender, initialSupply);
     }
 
-    function balanceOf(address account) public view returns (uint256) {
+    function balanceOf(address account) external view returns (uint256) {
         return balances[account];
     }
 
-    function transfer(address to, uint256 amount) public returns (bool) {
-        require(to != address(0), "Cannot transfer to zero address");
+    function transfer(address to, uint256 amount) external validAddress(to) returns (bool) {
         require(balances[msg.sender] >= amount, "Insufficient balance");
 
         balances[msg.sender] -= amount;
@@ -43,22 +47,18 @@ contract HybitToken {
         return true;
     }
 
-    function approve(address spender, uint256 amount) public returns (bool) {
-        require(spender != address(0), "Cannot approve zero address");
-
+    function approve(address spender, uint256 amount) external validAddress(spender) returns (bool) {
         allowances[msg.sender][spender] = amount;
         
         emit Approval(msg.sender, spender, amount);
         return true;
     }
 
-    function allowance(address ownerAddr, address spender) public view returns (uint256) {
+    function allowance(address ownerAddr, address spender) external view returns (uint256) {
         return allowances[ownerAddr][spender];
     }
 
-    function transferFrom(address from, address to, uint256 amount) public returns (bool) {
-        require(from != address(0), "Cannot transfer from zero address");
-        require(to != address(0), "Cannot transfer to zero address");
+    function transferFrom(address from, address to, uint256 amount) external validAddress(from) validAddress(to) returns (bool) {
         require(balances[from] >= amount, "Insufficient balance");
         require(allowances[from][msg.sender] >= amount, "Allowance exceeded");
 
@@ -70,17 +70,14 @@ contract HybitToken {
         return true;
     }
 
-    function mint(address to, uint256 amount) public onlyOwner {
-        require(to != address(0), "Cannot mint to zero address");
-        
+    function mint(address to, uint256 amount) external onlyOwner validAddress(to) {
         balances[to] += amount;
         totalSupply += amount;
         
         emit Transfer(address(0), to, amount);
     }
 
-    function transferOwnership(address newOwner) public onlyOwner {
-        require(newOwner != address(0), "New owner cannot be zero address");
+    function transferOwnership(address newOwner) external onlyOwner validAddress(newOwner) {
         owner = newOwner;
     }
 }
